@@ -70,21 +70,21 @@ public class Asteroids {
 		ast3width = 26;
 		try {
 			background = ImageIO.read(new File("img/background.png"));
-			player = ImageIO.read(new File("../img/player.png"));
-			flame1 = ImageIO.read(new File("../img/flame1.png"));
-			flame2 = ImageIO.read(new File("../img/flame1.png"));
-			flame3 = ImageIO.read(new File("../img/flame1.png"));
-			flame4 = ImageIO.read(new File("../img/flame1.png"));
-			flame5 = ImageIO.read(new File("../img/flame1.png"));
-			flame6 = ImageIO.read(new File("../img/flame1.png"));
-			ast1 = ImageIO.read(new File("../img/astroid1.png"));
-			ast2 = ImageIO.read(new File("../img/astroid2.png"));
-			ast3 = ImageIO.read(new File("../img/astroid3.png"));
-			playerBullet = ImageIO.read(new File("../img/playerbullet.png"));
-			enemyShip = ImageIO.read(new File("../img/enemy.png"));
-			enemyBullet = ImageIO.read(new File("../img/enemybullet.png"));
-			exp1 = ImageIO.read(new File("../img/Explosion1.png"));
-			exp2 = ImageIO.read(new File("../img/Explosion2.png"));
+			player = ImageIO.read(new File("../RacingGame/img/player.png"));
+			flame1 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
+			flame2 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
+			flame3 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
+			flame4 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
+			flame5 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
+			flame6 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
+			ast1 = ImageIO.read(new File("../RacingGame/img/astroid1.png"));
+			ast2 = ImageIO.read(new File("../RacingGame/img/astroid2.png"));
+			ast3 = ImageIO.read(new File("../RacingGame/img/astroid3.png"));
+			playerBullet = ImageIO.read(new File("../RacingGame/img/playerbullet.png"));
+			enemyShip = ImageIO.read(new File("../RacingGame/img/enemy.png"));
+			enemyBullet = ImageIO.read(new File("../RacingGame/img/enemybullet.png"));
+			exp1 = ImageIO.read(new File("../RacingGame/img/Explosion1.png"));
+			exp2 = ImageIO.read(new File("../RacingGame/img/Explosion2.png"));
 		} catch(IOException ioe) {
 
 		}
