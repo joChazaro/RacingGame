@@ -714,7 +714,7 @@ public class Asteroids {
 
 			}
 			try {
-				playSound("music.wav");
+				playSound("backgroundMusic1.wav");
 			} catch (LineUnavailableException lineUnavailableException) {
 				lineUnavailableException.printStackTrace();
 			} catch (IOException ioException) {
