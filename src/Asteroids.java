@@ -77,9 +77,9 @@ public class Asteroids {
 			flame4 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
 			flame5 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
 			flame6 = ImageIO.read(new File("../RacingGame/img/flame1.png"));
-			ast1 = ImageIO.read(new File("../RacingGame/img/astroid1.png"));
-			ast2 = ImageIO.read(new File("../RacingGame/img/astroid2.png"));
-			ast3 = ImageIO.read(new File("../RacingGame/img/astroid3.png"));
+			ast1 = ImageIO.read(new File("../RacingGame/img/asteroid1.png"));
+			ast2 = ImageIO.read(new File("../RacingGame/img/asteroid2.png"));
+			ast3 = ImageIO.read(new File("../RacingGame/img/asteroid3.png"));
 			playerBullet = ImageIO.read(new File("../RacingGame/img/playerbullet.png"));
 			enemyShip = ImageIO.read(new File("../RacingGame/img/enemy.png"));
 			enemyBullet = ImageIO.read(new File("../RacingGame/img/enemybullet.png"));
