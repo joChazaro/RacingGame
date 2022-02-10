@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-public class racecar {
+public class formuoli1 {
 
     private static Boolean endgame;
     private static BufferedImage background;
@@ -121,7 +121,7 @@ public class racecar {
     private static Clip clip2;
     private static Image image;
 
-    public racecar() {
+    public formuoli1() {
         setup();
     }
 
