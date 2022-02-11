@@ -216,9 +216,9 @@ public class formuoli1 {
         try {
             //play music
             ais = AudioSystem.getAudioInputStream(new File("backgroundMusic1.wav"));
-            clip = AudioSystem.getClip();
-            clip.open(ais);
-            clip.loop(0);
+            wav1 = AudioSystem.getClip();
+            wav1.open(ais);
+            wav1.loop(0);
         } catch (UnsupportedAudioFileException uafe) {
         } catch (IOException ioe) {
         } catch (LineUnavailableException lue) {
@@ -259,8 +259,8 @@ public class formuoli1 {
                     g2d.drawString("Player 1 Best Lap: " + bestTimePlayer1 / 1000f + " seconds", 450, 550);
                     g2d.drawString("Player 2 Best Lap: " + bestTimePlayer2 / 1000f + " seconds", 450, 650);
                     endgame = true;
-                    clip.close();
-                    clip2.close();
+                    wav1.close();
+                    wav2.close();
                 } else if (p2CurrentLap >= maxLaps + 1) {
                     drawWinner("Player 2");
                     g2d.setFont(new Font("TimesRoman", Font.BOLD, 40));
@@ -268,8 +268,8 @@ public class formuoli1 {
                     g2d.drawString("Player 1 Best Lap: " + bestTimePlayer1 / 1000f + " seconds", 450, 550);
                     g2d.drawString("Player 2 Best Lap: " + bestTimePlayer2 / 1000f + " seconds", 450, 650);
                     endgame = true;
-                    clip.close();
-                    clip2.close();
+                    wav1.close();
+                    wav2.close();
                 }
 
                 try {
@@ -354,10 +354,10 @@ public class formuoli1 {
             try {
                 //play music
                 ais = AudioSystem.getAudioInputStream(new File("backgroundMusic0.wav"));
-                clip = AudioSystem.getClip();
-                clip.open(ais);
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-                clip.start();
+                wav1 = AudioSystem.getClip();
+                wav1.open(ais);
+                wav1.loop(Clip.LOOP_CONTINUOUSLY);
+                wav1.start();
 
             } catch (UnsupportedAudioFileException uafe) {
             } catch (IOException ioe) {
@@ -381,7 +381,7 @@ public class formuoli1 {
     private static class QuitGame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             endgame = true;
-            clip.stop();
+            wav1.stop();
         }
     }
 
@@ -514,8 +514,8 @@ public class formuoli1 {
                 }
 
                 if (hitPlayer(p1, p2) || hitPlayer(p2, p1)) {
-                    clip2.setFramePosition(0);
-                    clip2.start();
+                    wav2.setFramePosition(0);
+                    wav2.start();
                 }
 
                 if (!upPressed && !downPressed && p1Velocity > 0) {
@@ -701,8 +701,8 @@ public class formuoli1 {
             while (!endgame) {
                 if (collisionOccurs(p1, p2)) {
                     System.out.println("crashed with other player");
-                    clip2.setFramePosition(0);
-                    clip2.start();
+                    wav2.setFramePosition(0);
+                    wav2.start();
                     p1Velocity = changeVelocity(p1Velocity);
                     p2Velocity = changeVelocity(p2Velocity);
                 }
