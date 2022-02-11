@@ -93,11 +93,6 @@ public class formuoli1 {
         setup();
     }
 
-    /**
-     * Initializes important variables that need to be reset at the beginning of each game,
-     * imports the game images, establishes the app frame, names the frame, catches any necessary
-     * exceptions caused by initialization of images
-     */
     public static void setup() {
         appFrame = new JFrame("Formuoli 1 - Racing Game");
         xOffset = 0;
@@ -130,12 +125,12 @@ public class formuoli1 {
 
             //default images for the game
             gameCover = ImageIO.read(new File("img/gamecover.png"));
-            background = ImageIO.read(new File("img/racetrack.png"));
+            background = ImageIO.read(new File("img/racebackground.png"));
             player = ImageIO.read(new File("img/pattyWagon.png"));
-            //player2 = ImageIO.read(new File("img/boatMobile.png"));
+            player2 = ImageIO.read(new File("img/boat.png"));
             //vehicle choices
-            //bus = ImageIO.read(new File("img/bus.png"));
-            //boulder = ImageIO.read(new File("img/boulder.png"));
+            bus = ImageIO.read(new File("img/bus.png"));
+            boulder = ImageIO.read(new File("img/boulder.png"));
 
         } catch (IOException ioe) {
 
@@ -374,10 +369,6 @@ public class formuoli1 {
             //t3.start();
         }
     }
-
-    /**
-     * Quits the game and ends all current threads
-     */
     private static class QuitGame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             endgame = true;
@@ -661,8 +652,6 @@ public class formuoli1 {
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(5));
         g2d.drawRect(725, 40, 225, 100);
-
-        //draw the text to display current speed
         DecimalFormat df = new DecimalFormat("###");
         g2d.setFont(new Font("ARIAL", Font.BOLD, 22));
         g2d.drawString("P1 Speed: " + df.format(p1Velocity * 20) + " MPH", 730, 90);
@@ -671,11 +660,9 @@ public class formuoli1 {
 
     private static void drawPlayer() {
 
-        //import graphics
         Graphics g = appFrame.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
 
-        //draw the players
         g2d.drawImage(rotateImageObject(p1).filter(player, null), (int) (p1.getX() + 0.5), (int) (p1.getY() + 0.5), null);
         g2d.drawImage(rotateImageObject(p2).filter(player2, null), (int) (p2.getX() + 0.5), (int) (p2.getY() + 0.5), null);
     }
