@@ -34,91 +34,59 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 public class formuoli1 {
-
     private static Boolean endgame;
     private static BufferedImage background;
     private static BufferedImage player;
     private static BufferedImage player2;
     private static BufferedImage gameCover;
-
     private static Boolean upPressed;
     private static Boolean downPressed;
     private static Boolean leftPressed;
     private static Boolean rightPressed;
-
     private static Boolean wPressed;
     private static Boolean sPressed;
     private static Boolean aPressed;
     private static Boolean dPressed;
-
     private static ImageObject p1;
     private static ImageObject p2;
-
-    private static double p1Width;
-    private static double p1Height;
+    private static double pWidth;
+    private static double pHeight;
     private static double p1OriginalX;
     private static double p1OriginalY;
     private static double p1Velocity;
-
     private static double p2Width;
     private static double p2Height;
     private static double p2OriginalX;
     private static double p2OriginalY;
     private static double p2Velocity;
-
-    //max speed for the vehicles
     private static int maxSpeed;
-
     private static int xOffset;
     private static int yOffset;
-    private static int winWidth;
-    private static int winHeight;
-
     private static double pi;
     private static double twoPi;
-
-    //used in the drawClock method to determine how many seconds
-    //have elapsed since the beginning of the game
-    //used in lap counting as well to make sure players cannot do laps too quickly
     private static long start = System.currentTimeMillis();
     private static long startPlayer1 = System.currentTimeMillis();
     private static long startPlayer2 = System.currentTimeMillis();
-
-    //best time tracker for each player
     private static long bestTimePlayer1 = Integer.MAX_VALUE;
     private static long bestTimePlayer2 = Integer.MAX_VALUE;
-
     private static JFrame appFrame;
     private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
-
     private static int maxLaps;
     private static int currentLap;
-
-    //drop down menus for selecting # laps and vehicle to play with
     private static JComboBox lapList;
     private static JComboBox vehicleList;
     private static JComboBox vehicleList2;
-
-    //these will be used to keep track of the current lap of each player,
-    //whichever player is ahead will be used to increment the current lap counter
     private static int p1CurrentLap = 1;
     private static int p2CurrentLap = 1;
-
-    //holding variables for the vehicle images
     private static BufferedImage pattyWagon;
     private static BufferedImage boatMobile;
     private static BufferedImage bus;
     private static BufferedImage boulder;
-    //array of barriers for the cars	
     private static BufferedImage[] barriers;
-
-    //variables for playing music
     private static AudioInputStream ais;
-    private static Clip clip;
-
-    //plays the sounds of explosions when vehicles collide
+    private static Clip wav1;
     private static AudioInputStream ais2;
-    private static Clip clip2;
+    private static Clip wav2;
     private static Image image;
 
     public formuoli1() {
@@ -134,25 +102,26 @@ public class formuoli1 {
         appFrame = new JFrame("Formuoli 1 - Racing Game");
         xOffset = 0;
         yOffset = 0;
-        winWidth = 500;
-        winHeight = 500;
+        //winWidth = 500;
+        //winHeight = 500;
         pi = Math.PI;
         twoPi = 2 * pi;
         endgame = false;
 
-        maxSpeed = 3;
-        maxLaps = 3;
+        maxSpeed = 5;
+        maxLaps = 5;
         currentLap = 1;
 
-        p1Height = 50;
-        p1Width = 50;
+        //vehicle dimensions
+        pHeight = 50;
+        pWidth = 50;
 
         //initial coords for the players
-        p1OriginalX = 1080; //(double) xOffset + ((double) winWidth / 2.0) - (p1Width / 2.0) + 400;
-        p1OriginalY = 525; //(double) yOffset + ((double) winHeight / 2.0) - (p1Height / 2.0) + 50;
+        p1OriginalX = 500; //(double) xOffset + ((double) winWidth / 2.0) - (pWidth / 2.0) + 400;
+        p1OriginalY = 0; //(double) yOffset + ((double) winHeight / 2.0) - (pHeight / 2.0) + 50;
 
-        p2OriginalX = 1030; //(double) xOffset + ((double) winWidth / 2.0) - (p1Width / 2.0) + 400;
-        p2OriginalY = 525; //(double) yOffset + ((double) winHeight / 2.0) - (p1Height / 2.0) + 100;
+        p2OriginalX = 600; //(double) xOffset + ((double) winWidth / 2.0) - (pWidth / 2.0) + 400;
+        p2OriginalY = 325; //(double) yOffset + ((double) winHeight / 2.0) - (pHeight / 2.0) + 100;
 
         System.out.println("P1 x: " + p1OriginalX + ", P1 y: " + p1OriginalY);
         System.out.println("P2 x: " + p2OriginalX + ", P2 y: " + p2OriginalY);
@@ -160,20 +129,13 @@ public class formuoli1 {
         try {
 
             //default images for the game
-            background = ImageIO.read(new File("img/racetrack.png"));
-            //player = ImageIO.read(new File("img/pattyWagon.png"));
-            //player2 = ImageIO.read(new File("img/boatMobile.png"));
             gameCover = ImageIO.read(new File("img/gamecover.png"));
-            bus = ImageIO.read(new File("img/bus.png"));
-            boulder = ImageIO.read(new File("img/boulder.png"));
-
-            //use this to create an array of barriers to act as collision for the vehicles
-        //    for (int i = 0; i < 8; i++) {
-        //        if (i < 4)
-        //            wallArrays[i] = ImageIO.read(new File("Images/wall-long.png"));
-        //        else
-        //            wallArrays[i] = ImageIO.read(new File("Images/wall-short.png"));
-        //    }
+            background = ImageIO.read(new File("img/racetrack.png"));
+            player = ImageIO.read(new File("img/pattyWagon.png"));
+            //player2 = ImageIO.read(new File("img/boatMobile.png"));
+            //vehicle choices
+            //bus = ImageIO.read(new File("img/bus.png"));
+            //boulder = ImageIO.read(new File("img/boulder.png"));
 
         } catch (IOException ioe) {
 
@@ -207,7 +169,7 @@ public class formuoli1 {
         lapList.addActionListener(new LapListener());
 
         //select vehicle player 1 drop down
-        String[] vehicles = new String[]{"Patty Wagon", "Boatmobile"};
+        String[] vehicles = new String[]{"Patty Wagon", "Boatmobile", "Bus", "Boulder"};
         JLabel vehicleText1 = new JLabel("Player 1");
         vehicleList = new JComboBox(vehicles);
         myPanel.add(vehicleText1);
@@ -243,11 +205,6 @@ public class formuoli1 {
         appFrame.setVisible(true);
     }
 
-    /**
-     * This is the class for loading the cover page
-     * aka start-up screen
-     * Uses JPanel as a container and the ImageIcon to hols the image
-     */
     public static void Cover() {
         image = new ImageIcon("img/gamecover.png").getImage();
 
@@ -262,8 +219,6 @@ public class formuoli1 {
             clip = AudioSystem.getClip();
             clip.open(ais);
             clip.loop(0);
-            //clip.start();
-
         } catch (UnsupportedAudioFileException uafe) {
         } catch (IOException ioe) {
         } catch (LineUnavailableException lue) {
@@ -286,10 +241,6 @@ public class formuoli1 {
         }
     }
 
-    /**
-     * Responsible for drawing the images – dynamic and static –
-     * that can be seen in the game
-     */
     private static class Animate implements Runnable {
         Graphics g = appFrame.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
@@ -339,18 +290,12 @@ public class formuoli1 {
         g2d.drawString(winningPlayer + " won!", 400, 400);
     }
 
-    /**
-     * detects if a player changes the number of laps from the dropdown
-     */
     private static class LapListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             maxLaps = lapList.getSelectedIndex() + 1;
         }
     }
 
-    /**
-     * detects if player 1 changes their vehicle
-     */
     private static class vehicleListener1 implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             int n = vehicleList.getSelectedIndex();
@@ -358,9 +303,6 @@ public class formuoli1 {
         }
     }
 
-    /**
-     * detects if player 2 changes their vehicle
-     */
     private static class vehicleListener2 implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             int n = vehicleList2.getSelectedIndex();
@@ -372,11 +314,11 @@ public class formuoli1 {
         if (n == 0)
             playervehicle = pattyWagon;
         else if (n == 1)
-            playervehicle = boulder;
+            playervehicle = boatMobile;
         else if (n == 2)
             playervehicle = bus;
         else
-            playervehicle = boatMobile;
+            playervehicle = boulder;
         return playervehicle;
     }
 
@@ -397,8 +339,8 @@ public class formuoli1 {
             dPressed = false;
 
             //instantiate the ImageObjects for the player vehicles
-            p1 = new ImageObject(p1OriginalX, p1OriginalY, p1Width, p1Height, 0.0);
-            p2 = new ImageObject(p2OriginalX, p2OriginalY, p1Width, p1Height, 0.0);
+            p1 = new ImageObject(p1OriginalX, p1OriginalY, pWidth, pHeight, 0.0);
+            p2 = new ImageObject(p2OriginalX, p2OriginalY, pWidth, pHeight, 0.0);
 
             p1Velocity = 0.0;
             p2Velocity = 0.0;
@@ -450,6 +392,9 @@ public class formuoli1 {
             } else if (p2CurrentLap >= maxLaps + 1) {
                 drawWinner("Player 2");
             }
+            else if (bestTimePlayer1 == bestTimePlayer2) {
+                drawWinner("Player 1");
+            }
         }
 
         private static void drawWinner(String winningPlayer) {
@@ -484,16 +429,12 @@ public class formuoli1 {
                 velocityStep += 0.01 * 1;
             }
         }
-
-        //checks if the vehicles are still on the track or not
         public static boolean inBounds(ImageObject playerCheck) {
             return playerCheck.getX() < 1123 && playerCheck.getX() > 207 && playerCheck.getY() > 216 && playerCheck.getY() < 837;
         }
-         // Checks to see if the players are in the inner grass area	
          public static boolean inBoundsInner(ImageObject playerCheck) {	
             return playerCheck.getX() < 970 && playerCheck.getX() > 375 && playerCheck.getY() > 375 && playerCheck.getY() < 670;	
         }	
-        // Checks to see if the players hit blue tent	
         public static boolean hitBlueTent(ImageObject playerCheck) {	
             return playerCheck.getX() > 445 && playerCheck.getX() < 815 && playerCheck.getY() > 28 && playerCheck.getY() < 175;	
         }	
@@ -534,20 +475,17 @@ public class formuoli1 {
                     if (prevLap < bestTimePlayer1) bestTimePlayer1 = prevLap;
                 }
 
-                // This slows down players outside of track.	
                 if (upPressed && !inBounds(p1)) {	
                     p1Velocity = (double) maxSpeed * 0.8;	
                 } else if (wPressed && !inBounds(p2)) {	
                     p2Velocity = (double) maxSpeed * 0.8;	
                 }	
-                // This slows down players inside of the inner grass area of the track.	
-                // Made this very drastic in case of cheating.	
+
                 if (upPressed && inBoundsInner(p1)) {	
                     p1Velocity = (double) maxSpeed * 0.08;	
                 } else if (wPressed && inBoundsInner(p2)) {	
                     p2Velocity = (double) maxSpeed * 0.08;	
                 }	
-                // Bouncing affect when player hits a building to avoid having player stuck on wall.	
                 if (hitBlueTent(p1) || hitBrownHouse(p1) || hitRedHouse(p1) || hitEndOfMap(p1) || hitPlayer(p1, p2)) {	
                     p1Velocity = 0;	
                     p1Velocity -= velocityStep * 100;	
@@ -569,7 +507,6 @@ public class formuoli1 {
                     System.out.println("Exception caught for PlayerMover");
                 }
 
-                //handle acceleration for player 1 and 2
                 if (upPressed && p1Velocity < maxSpeed && inBounds(p1)) {
                     p1Velocity += velocityStep * 4;
                 } else if (wPressed && p2Velocity < maxSpeed && inBounds(p2)) {
@@ -581,28 +518,24 @@ public class formuoli1 {
                     clip2.start();
                 }
 
-                //handle air braking – slowing naturally because no acceleration
                 if (!upPressed && !downPressed && p1Velocity > 0) {
                     p1Velocity -= velocityStep * 3;
                 } else if (!wPressed && !sPressed && p2Velocity > 0) {
                     p2Velocity -= velocityStep * 3;
                 }
 
-                // Speeds the players back up after being stopped.
                 if (upPressed && downPressed && p1Velocity < 0) {
                     p1Velocity += velocityStep * 3;
                 } else if (wPressed && sPressed && p2Velocity < 0) {
                     p2Velocity += velocityStep * 3;
                 }
 
-                //handle braking for player 1 and 2
                 if (downPressed && p1Velocity * -1 < maxSpeed / 2 && inBounds(p1))
                     p1Velocity -= velocityStep * 5;
                 else if (sPressed && p2Velocity * -1 < maxSpeed / 2 && inBounds(p2)) {
                     p2Velocity -= velocityStep * 5;
                 }
 
-                //handle left rotation for player 1 and 2
                 if (leftPressed) {
                     if (p1Velocity < 0)
                         p1.rotate(-rotateStep);
@@ -617,7 +550,6 @@ public class formuoli1 {
                         p2.rotate(rotateStep);
                 }
 
-                //handle right rotation for player 1 and 2
                 if (rightPressed) {
                     if (p1Velocity < 0)
                         p1.rotate(rotateStep);
@@ -639,10 +571,6 @@ public class formuoli1 {
         }
     }
 
-    /**
-     * Determines whether or not one of the bound keys has been
-     * pressed and sets the correct variable to TRUE
-     */
     private static class KeyPressed extends AbstractAction {
 
         private String action;
@@ -656,8 +584,6 @@ public class formuoli1 {
         }
 
         public void actionPerformed(ActionEvent e) {
-//            System.out.println("Key pressed");
-
             if (action.equals("UP")) upPressed = true;
             if (action.equals("DOWN")) downPressed = true;
             if (action.equals("LEFT")) leftPressed = true;
@@ -670,11 +596,6 @@ public class formuoli1 {
         }
     }
 
-
-    /**
-     * Determines whether or not one of the bound keys has been
-     * pressed and sets the correct variable to FALSE
-     */
     private static class KeyReleased extends AbstractAction {
 
         private String action;
@@ -702,12 +623,6 @@ public class formuoli1 {
         }
     }
 
-    /**
-     * Method responsible for binding the keyboard keys to the game
-     *
-     * @param myPanel imports the game panel
-     * @param input   represents the given keyboard input as a string
-     */
     private static void bindKey(JPanel myPanel, String input) {
         System.out.println("Key bound");
 
@@ -717,24 +632,16 @@ public class formuoli1 {
         myPanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released " + input), input + " released");
         myPanel.getActionMap().put(input + " released", new KeyReleased(input));
     }
-
-    /**
-     * The main method responsible for drawing the stop clock during the game
-     */
     private static void drawClock() {
         Graphics g = appFrame.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
         DecimalFormat df = new DecimalFormat("##.##");
-
-        //gets the current time and compares it against when execution began
         long end = System.currentTimeMillis();
         float sec = (end - start) / 1000f;
         Stroke oldStroke = g2d.getStroke();
 
-        //sets the brush, color, and draws the strings / shapes for the clock
         g2d.setColor(Color.GREEN);
         g2d.fillRect(215, 40, 275, 115);
-
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(5));
         g2d.drawRect(215, 40, 275, 115);
@@ -745,16 +652,10 @@ public class formuoli1 {
         g2d.drawString("Player 2 Laps: " + p2CurrentLap + "/" + maxLaps, 225, 140);
     }
 
-    /**
-     * Display the current speed for each player along with
-     * lap information
-     */
     private static void drawSpeed() {
 
         Graphics g = appFrame.getGraphics();
         Graphics2D g2d = (Graphics2D) g;
-
-        //draw the rectangle to contain the speed text
         g2d.setColor(Color.CYAN);
         g2d.fillRect(725, 40, 225, 100);
         g2d.setColor(Color.BLACK);
@@ -768,9 +669,6 @@ public class formuoli1 {
         g2d.drawString("P2 Speed: " + df.format(p2Velocity * 20) + " MPH", 730, 130);
     }
 
-    /**
-     * Draws the player sprites
-     */
     private static void drawPlayer() {
 
         //import graphics
@@ -787,31 +685,17 @@ public class formuoli1 {
         Graphics2D g2d = (Graphics2D) g;	
     }
 
-    /**
-     * Responsible for rotating the object attached to the player image
-     * so that it can track movement accurately
-     *
-     * @param obj the given image that is being rotated
-     * @return returns the transformation applied to the image object
-     */
     private static AffineTransformOp rotateImageObject(ImageObject obj) {
         AffineTransform at = AffineTransform.getRotateInstance(-obj.getAngle(), obj.getWidth() / 2.0, obj.getyHeight() / 2.0);
         return new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
     }
 
-    /**
-     * Draws the main background of the game which is the race track with
-     * building and other details
-     */
     private static void drawBackground() {
         Graphics g = appFrame.getGraphics();
         Graphics2D g2D = (Graphics2D) g;
         g2D.drawImage(background, xOffset, yOffset, null);
     }
 
-    /**
-     * Class for collision checking thread
-     */
     private static class CollisionChecker implements Runnable {
         public void run() {
             while (!endgame) {
@@ -832,9 +716,6 @@ public class formuoli1 {
         }
     }
 
-    /**
-     * Used to determine if two objects are overlapping
-     */
     private static Boolean isInside(double p1x, double p1y, double p2x1, double p2y1, double p2x2, double p2y2)
 	{
 		Boolean ret = false;
@@ -903,19 +784,12 @@ public class formuoli1 {
 
 	}
 
-
-    /**
-     * @return returns whether or not a collision has occurred in the game
-     */
     private static boolean collisionOccurs(ImageObject obj1, ImageObject obj2) {
 
-        //printing coords to check for overlapping objects
         System.out.println("P1 x: " + obj1.x + ", P1 y: " + obj1.y);
         System.out.println("P2 x: " + obj2.x + ", P2 y: " + obj2.y);
         System.out.println();
         System.out.println();
-
-        //limit the amount of input being printed out
         try {
             Thread.sleep(800);
         } catch (InterruptedException ie) {
@@ -927,10 +801,6 @@ public class formuoli1 {
                 obj2.getY() + obj2.getyHeight());
     }
 
-    /**
-     * This class defines the ImageObject which is essentially the object that is attached
-     * to the image that is responsible primarily for movement and collision detection / handling
-     */
     private static class ImageObject {
 
         private double x;
